@@ -1,58 +1,72 @@
 const express = require('express');
-const AdminAdminrouter = express.Adminrouter();
+const adminRoutes = express.Router();
 const bcrypt = require('bcrypt');
-const Admin = require('../models/Admin');
-const Manager = require('../models/Manager');
+const User = require('../models/User');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
+const { authorize } = require('../middleware/authorize.middleware');
 
-Adminrouter.post('/', jwtMiddleware, async (req, res) => {
-  const { username, password } = req.body;
+
+// adminRoutes.use(authorize(['admin']))
+
+adminRoutes.post('/', authorize, async (req, res) => {
+  const { name, image, dob, email,role, phoneNumber, password } = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newAdmin = new Admin({
-      username,
+  
+    const newUser = new User({
+      name,
+      image,
+      dob,
+      email,
+      role,
+      phoneNumber,
       password: hashedPassword,
+      
     });
 
-    await newAdmin.save();
-    res.status(201).send({ message: 'Admin created successfully' });
+    await newUser.save();
+
+  
+
+    res.status(201).send({ message: 'User created successfully' });
   } catch (error) {
     res.status(500).send({ message: 'Server error' });
   }
 });
 
-Adminrouter.get('/managers', jwtMiddleware, async (req, res) => {
+adminRoutes.get('/', async (req, res) => {
   try {
-    const managers = await Manager.find().populate('admins');
-    res.send(managers);
+    const users = await User.find({ role: 'admin' });
+    res.send(users);
   } catch (error) {
     res.status(500).send({ message: 'Server error' });
   }
 });
 
-Adminrouter.put('/managers/:id', jwtMiddleware, async (req, res) => {
-  const { id } = req.params;
-  const { password } = req.body;
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await Manager.findByIdAndUpdate(id, { password: hashedPassword });
-    res.send({ message: 'Manager updated successfully' });
-  } catch (error) {
-    res.status(500).send({ message: 'Server error' });
-  }
-});
-
-Adminrouter.delete('/managers/:id', jwtMiddleware, async (req, res) => {
+adminRoutes.delete('/delete:id', authorize, async (req, res) => {
   const { id } = req.params;
 
   try {
-    await Manager.findByIdAndDelete(id);
-    res.send({ message: 'Manager deleted successfully' });
+    await User.findByIdAndDelete(id);
+    res.json({ message: 'User deleted successfully' });
   } catch (error) {
-    res.status(500).send({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-module.exports = Adminrouter;
+adminRoutes.patch('/:id', authorize, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await User.findByIdAndDelete(id);
+    res.json({ message: 'User update successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
+module.exports = adminRoutes;
