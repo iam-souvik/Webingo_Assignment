@@ -2,18 +2,17 @@ const express = require('express');
 const managerRoutes = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const jwtMiddleware = require('../middleware/jwtMiddleware');
 const { authorize } = require('../middleware/authorize.middleware');
 
 
 managerRoutes.use(authorize(['admin']))
 
-managerRoutes.post('/', authorize, async (req, res) => {
-  const { name, image, dob, email,role, phoneNumber, password } = req.body;
+managerRoutes.post('/',  async (req, res) => {
+  const { name, image, dob, email, role, phoneNumber, password } = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-  
+
     const newUser = new User({
       name,
       image,
@@ -21,16 +20,14 @@ managerRoutes.post('/', authorize, async (req, res) => {
       email,
       role,
       phoneNumber,
-      password: hashedPassword,
-      managers: newUserId,
+      password: hashedPassword
     });
 
     await newUser.save();
 
-  
-
-    res.status(201).send({ message: 'User created successfully' });
+    res.status(201).send({ message: 'Manager created successfully' });
   } catch (error) {
+    console.log('error:', error)
     res.status(500).send({ message: 'Server error' });
   }
 });
@@ -38,35 +35,34 @@ managerRoutes.post('/', authorize, async (req, res) => {
 managerRoutes.get('/', async (req, res) => {
   try {
     const users = await User.find({ role: 'manager' });
-    res.send(users);
+    res.send({ users, message: "Get data successfully" });
   } catch (error) {
     res.status(500).send({ message: 'Server error' });
   }
 });
 
-managerRoutes.delete('/delete:id', jwtMiddleware, async (req, res) => {
+managerRoutes.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
     await User.findByIdAndDelete(id);
-    res.json({ message: 'User deleted successfully' });
+    res.status(200).send({ message: 'Manager deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).send({ message: 'Server error' });
   }
 });
 
-managerRoutes.patch('/:id', authorize, async (req, res) => {
+managerRoutes.patch('/:id', async (req, res) => {
   const { id } = req.params;
+  const update = req.body;
 
   try {
-    await User.findByIdAndDelete(id);
-    res.json({ message: 'User update successfully' });
+    await User.findByIdAndUpdate(id, update, { runValidators: true });
+    res.status(200).send({ message: 'Manager update successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).send({ message: 'Server error' });
   }
 });
-
-
 
 
 module.exports = managerRoutes;

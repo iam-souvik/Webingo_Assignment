@@ -69,7 +69,6 @@ export default function Register() {
                     isClosable: true,
                     position: "top"
                })
-               navigate("/login")
 
           }).catch((e) => {
                Toast({
@@ -115,11 +114,8 @@ export default function Register() {
                <Stack spacing={8} mx={'auto'} width={"600px"} py={12} px={6}>
                     <Stack align={'center'}>
                          <Heading fontSize={'4xl'} textAlign={'center'}>
-                              Sign up
+                              User Created By Manager
                          </Heading>
-                         <Text fontSize={'lg'} color={'gray.600'}>
-                              to enjoy all of our cool features ✌️
-                         </Text>
                     </Stack>
                     <Box
                          rounded={'lg'}
@@ -134,10 +130,10 @@ export default function Register() {
                                    </FormControl>
                                    <FormControl isRequired>
                                         <FormLabel>Select Your Role</FormLabel>
-                                        <Select placeholder='Select option' id='role'>
+                                        <Select placeholder='Select option' id='role' defaultValue="user">
                                              <option value='user'>user</option>
-                                             <option value='manager'>Manager</option>
-                                             <option value='admin'>Admin</option>
+                                             <option value='manager' disabled>Manager</option>
+                                             <option value='admin' disabled>Admin</option>
                                         </Select>
                                    </FormControl>
                                    <FormControl id="image">
@@ -180,14 +176,9 @@ export default function Register() {
                                              _hover={{
                                                   bg: 'blue.500',
                                              }}>
-                                             Sign up
+                                             Create User
                                         </Button>
 
-                                   </Stack>
-                                   <Stack pt={6}>
-                                        <Text align={'center'}>
-                                             Already a user?  <Link to="/login" style={{ color: "blue" }}>Login</Link>
-                                        </Text>
                                    </Stack>
                               </Stack>
                          </form>

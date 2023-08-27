@@ -6,7 +6,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const authCheck = require('./middleware/auth.middleware');
 const managerRoutes = require('./routes/manager');
-const adminRoutes = require('./routes/admin');
+// const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.use('/auth', authRoutes);
 app.use(authCheck)
 app.use('/user', userRoutes);
 app.use('/manager', managerRoutes);
-app.use("/admin",adminRoutes)
+// app.use("/admin",adminRoutes)
 
 app.use("*", (req, res) => {
   res.send({message: "Wrong end-point"})

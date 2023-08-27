@@ -34,7 +34,8 @@ function Signin() {
                name: usernameRef.current.value,
                password: pwdRef.current.value
           }
-
+          console.log('user:', user)
+          
           axios.post("http://localhost:8080/auth/login", user).then((res) => {
                const user = res.data.user;
                localStorage.setItem("USER", JSON.stringify(user));
@@ -45,9 +46,9 @@ function Signin() {
                     isClosable: true,
                     position: "top"
                })
-               if (user?.role === "manager") {
-                    navigate("/user");
-               } else if (user?.role === "admin") {
+               if (user?.role === "admin") {
+                    navigate("/admin");
+               } else if (user?.role === "manager") {
                     navigate("/manager")
                } else {
                     navigate("/");
@@ -125,7 +126,7 @@ function Signin() {
                               </Stack>
                               <Stack pt={6}>
                                    <Text align={'center'}>
-                                        New user? <Link to="/register" style={{ color: 'skyblue' }} >SignUp</Link>
+                                        New user? <Link to="/register" style={{ color: 'blue' }} >SignUp</Link>
                                    </Text>
                               </Stack>
                          </Stack>
