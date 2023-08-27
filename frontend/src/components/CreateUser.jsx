@@ -61,7 +61,13 @@ export default function Register() {
           setLoading(true);
 
 
-          axios.post("https://webingo-user-management.onrender.com/manager", data).then((res) => {
+          axios.post("https://webingo-user-management.onrender.com/manager", data,{
+               headers: {
+                    "Authorization": JSON.parse(localStorage.getItem("USER"))?.token
+                }
+          }).then((res) => {
+
+         
                Toast({
                     title: res.data.message,
                     status: 'success',
