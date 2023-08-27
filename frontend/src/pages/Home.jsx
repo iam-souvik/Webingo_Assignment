@@ -13,11 +13,7 @@ import { Box, Flex, Spacer , Heading, Text, Button,Center,VStack} from '@chakra-
 
 function Home() {
   return (
-    <>
-
-      
-
-
+    <Box style={{background: "linear-gradient(135deg, #ccc, rgb(68 140 163))", minHeight: "89dvh"}}>
       <Box p={8}>
         <Heading as="h1" size="xl" mb={4}>
           Welcome to User Management Site
@@ -55,7 +51,7 @@ function Home() {
           </VStack>
         </Center>
       </Box>
-    </>
+    </Box>
 
 
 

@@ -61,7 +61,7 @@ export default function Register() {
           setLoading(true);
 
 
-          axios.post("http://localhost:8080/auth/signup", data).then((res) => {
+          axios.post("https://webingo-user-management.onrender.com/auth/signup", data).then((res) => {
                Toast({
                     title: res.data.message,
                     status: 'success',

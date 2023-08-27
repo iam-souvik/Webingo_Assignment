@@ -42,7 +42,7 @@ const ManangerPanel = () => {
      const getProfile = async () => {
           setLoading(true)
           try {
-               const res = await axios.get(`http://localhost:8080/user`, {
+               const res = await axios.get(`https://webingo-user-management.onrender.com/user`, {
                     headers: {
                          'authorization': JSON.parse(localStorage.getItem("USER")).token,
                          "Content-Type": "aplication/json"
@@ -62,7 +62,7 @@ const ManangerPanel = () => {
           } catch (error) {
                console.log(error)
                Toast({
-                    title: error?.response?.statusText,
+                    title: error?.response?.statusText || error.message,
                     description: error?.response?.data?.message,
                     status: 'error',
                     duration: 4000,
@@ -75,7 +75,7 @@ const ManangerPanel = () => {
 
      const deleteProfile = async (id) => {
           try {
-               const res = await axios.delete(`http://localhost:8080/user/${id}`, {
+               const res = await axios.delete(`https://webingo-user-management.onrender.com/user/${id}`, {
                     headers: {
                          "Authorization": JSON.parse(localStorage.getItem("USER")).token,
                     }
@@ -95,7 +95,7 @@ const ManangerPanel = () => {
           } catch (error) {
                console.log('error:', error)
                Toast({
-                    title: error?.response?.statusText,
+                    title: error?.response?.statusText || error.message,
                     description: error?.response?.data?.message,
                     status: 'error',
                     duration: 4000,
@@ -126,7 +126,7 @@ const ManangerPanel = () => {
 
 
           try {
-               const res = await axios.patch(`http://localhost:8080/user/${editableContent._id}`, update, {
+               const res = await axios.patch(`https://webingo-user-management.onrender.com/user/${editableContent._id}`, update, {
                     headers: {
                          "Authorization": JSON.parse(localStorage.getItem("USER")).token,
                          "Content-Type": "application/json",
@@ -180,7 +180,7 @@ const ManangerPanel = () => {
      return (
           <div>
                {loading ? (
-                    <Spinner size="xl" mt={250} color="teal" thickness="4px" speed="0.65s" emptyColor="gray.200" />
+                    <Spinner  ml={"600px"} size="xl" mt={250} color="teal" thickness="4px" speed="0.65s" emptyColor="gray.200" />
                ) : (
                     <>
                          <Center pt="20px">

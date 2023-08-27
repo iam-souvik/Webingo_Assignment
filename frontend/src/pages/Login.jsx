@@ -36,7 +36,7 @@ function Signin() {
           }
           console.log('user:', user)
           
-          axios.post("http://localhost:8080/auth/login", user).then((res) => {
+          axios.post("https://webingo-user-management.onrender.com/auth/login", user).then((res) => {
                const user = res.data.user;
                localStorage.setItem("USER", JSON.stringify(user));
                Toast({
@@ -47,11 +47,11 @@ function Signin() {
                     position: "top"
                })
                if (user?.role === "admin") {
-                    navigate("/admin");
+                    window.location.replace("/admin");
                } else if (user?.role === "manager") {
-                    navigate("/manager")
+                    window.location.replace("/manager")
                } else {
-                    navigate("/");
+                    window.location.replace("/");
                }
           }).catch((e) => {
                Toast({
